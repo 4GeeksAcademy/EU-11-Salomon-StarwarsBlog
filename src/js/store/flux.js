@@ -1,44 +1,48 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
-		},
+				people: [],
+					},
 		actions: {
 			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
-			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
+				setPeopleData: (results) => {
+					const store = getStore();
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
+					setStore({ ...store, people: results });
+					},
 
-				//reset the global store
-				setStore({ demo: demo });
-			}
-		}
+				setPersonData: (uid, properties) => {
+					const store = getStore();
+					const newPeopleArray = store.people.map(person => {
+					if(person.uid === uid) {
+						person.properties = properties;
+					}
+					return person;
+				})
+
+				setStore({ ...store, people: newPeopleArray})
+			},
+
+				deleteListItem: (id) => {
+					const store = getStore();
+					
+
+					const filteredDemos = store.demo.filter((item) => item.id !== id);
+
+					setStore({ demo: filteredDemos });
+				},
+				setDemoList: (demoList) => {
+					setStore({ demo: demoList });
+				},
+				
+				// const newPeopleArray = store.people.map(person => {
+				// 	if(person.uid === uid) {
+				// 		person.properties = properties;
+				// 	}
+				// 	return person;
+				// })
+				// setStore({ ...store, people: newPeopleArray});
+		},
 	};
 };
 
